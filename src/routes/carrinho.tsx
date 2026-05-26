@@ -1,11 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Cookie, Minus, Plus, Trash2 } from "lucide-react";
+import { Cookie, Minus, Plus, Trash2, Tag, X } from "lucide-react";
 import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,10 +17,11 @@ export const Route = createFileRoute("/carrinho")({
 });
 
 function CarrinhoPage() {
-  const { items, setQty, remove, total, clear } = useCart();
+  const { items, setQty, remove, subtotal, discount, total, clear, coupon, applyCoupon, removeCoupon } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [endereco, setEndereco] = useState("");
+  const [cupomInput, setCupomInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const finalizar = async () => {
@@ -29,26 +31,27 @@ function CarrinhoPage() {
       return;
     }
     if (items.length === 0) return;
-    if (!endereco.trim()) {
-      toast.error("Informe o endereço de entrega");
-      return;
-    }
+    if (!endereco.trim()) return toast.error("Informe o endereço de entrega");
     setLoading(true);
-    const { error } = await supabase.from("pedidos").insert({
-      user_id: user.id,
-      itens: items,
-      total,
-      endereco,
-      status: "pago",
-    });
+    const { data, error } = await supabase
+      .from("pedidos")
+      .insert({ user_id: user.id, itens: items, total, endereco, status: "pago" })
+      .select("id")
+      .single();
     setLoading(false);
-    if (error) {
-      toast.error("Erro ao finalizar: " + error.message);
-      return;
-    }
+    if (error) return toast.error("Erro: " + error.message);
     clear();
     toast.success("Pedido realizado! 🍪");
-    navigate({ to: "/perfil" });
+    navigate({ to: "/pedido/$id", params: { id: data.id } });
+  };
+
+  const aplicar = () => {
+    if (applyCoupon(cupomInput)) {
+      toast.success(`Cupom ${cupomInput.toUpperCase()} aplicado!`);
+      setCupomInput("");
+    } else {
+      toast.error("Cupom inválido");
+    }
   };
 
   return (
@@ -59,7 +62,7 @@ function CarrinhoPage() {
         {items.length === 0 ? (
           <Card>
             <CardContent className="p-10 text-center text-muted-foreground">
-              Seu carrinho está vazio.
+              Seu carrinho está vazio. <Link to="/" className="text-primary underline">Ver catálogo</Link>
             </CardContent>
           </Card>
         ) : (
@@ -98,10 +101,44 @@ function CarrinhoPage() {
 
             <Card>
               <CardContent className="p-4 space-y-3">
-                <div className="flex justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span className="text-primary">R$ {total.toFixed(2).replace(".", ",")}</span>
+                {coupon ? (
+                  <div className="flex items-center justify-between rounded-md bg-primary/10 px-3 py-2">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Tag className="h-4 w-4 text-primary" />
+                      <span>Cupom <Badge variant="secondary">{coupon}</Badge> aplicado</span>
+                    </div>
+                    <Button size="icon" variant="ghost" onClick={removeCoupon}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Cupom de desconto"
+                      value={cupomInput}
+                      onChange={(e) => setCupomInput(e.target.value)}
+                    />
+                    <Button variant="outline" onClick={aplicar}>Aplicar</Button>
+                  </div>
+                )}
+
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Subtotal</span>
+                    <span>R$ {subtotal.toFixed(2).replace(".", ",")}</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-green-600">
+                      <span>Desconto</span>
+                      <span>- R$ {discount.toFixed(2).replace(".", ",")}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-lg font-semibold pt-1 border-t">
+                    <span>Total</span>
+                    <span className="text-primary">R$ {total.toFixed(2).replace(".", ",")}</span>
+                  </div>
                 </div>
+
                 <Input
                   placeholder="Endereço de entrega"
                   value={endereco}
