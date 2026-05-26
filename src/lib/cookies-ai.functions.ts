@@ -19,8 +19,18 @@ const InputSchema = z.object({
 });
 
 export const generateCookieDraft = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => InputSchema.parse(input))
-  .handler(async ({ data }): Promise<AiCookieDraft> => {
+  .handler(async ({ data, context }): Promise<AiCookieDraft> => {
+    const { supabase, userId } = context;
+    const { data: roles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    if (!roles?.some((r) => r.role === "admin")) {
+      throw new Error("Apenas administradores podem usar a geração com IA");
+    }
+
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("LOVABLE_API_KEY ausente no servidor");
 
