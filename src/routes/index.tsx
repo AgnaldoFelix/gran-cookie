@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "Cookie Shop — Cookies artesanais entregues na sua porta" },
+      { title: "GranCookie — Cookies artesanais entregues na sua porta" },
       {
         name: "description",
         content:

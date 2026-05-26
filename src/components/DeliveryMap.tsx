@@ -55,7 +55,7 @@ export function DeliveryMap({ origin, destination, courier, className }: Props) 
           zoomControl: true,
         });
 
-        new g.Marker({ position: origin, map, label: "🍪", title: "Cookie Shop" });
+        new g.Marker({ position: origin, map, label: "🍪", title: "GranCookie" });
         new g.Marker({ position: destination, map, label: "🏠", title: "Sua casa" });
         if (courier) new g.Marker({ position: courier, map, label: "🛵", title: "Entregador" });
 
