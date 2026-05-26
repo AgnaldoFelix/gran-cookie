@@ -13,7 +13,7 @@ import { useCart } from "@/hooks/useCart";
 
 export const Route = createFileRoute("/montar")({
   component: MontarPage,
-  head: () => ({ meta: [{ title: "Monte seu cookie com IA — Cookie Shop" }] }),
+  head: () => ({ meta: [{ title: "Monte seu cookie com IA — GranCookie" }] }),
 });
 
 function MontarPage() {

@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/carrinho")({
   component: CarrinhoPage,
-  head: () => ({ meta: [{ title: "Carrinho — Cookie Shop" }] }),
+  head: () => ({ meta: [{ title: "Carrinho — GranCookie" }] }),
 });
 
 function CarrinhoPage() {

@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/perfil")({
   component: PerfilPage,
-  head: () => ({ meta: [{ title: "Meu perfil — Cookie Shop" }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — GranCookie" }] }),
 });
 
 type Profile = {

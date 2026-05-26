@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/pedido/$id")({
   component: PedidoPage,
-  head: () => ({ meta: [{ title: "Rastreio — Cookie Shop" }] }),
+  head: () => ({ meta: [{ title: "Rastreio — GranCookie" }] }),
 });
 
 // Loja base (São Paulo - Av Paulista)

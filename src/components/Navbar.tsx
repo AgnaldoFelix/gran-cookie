@@ -13,7 +13,7 @@ export function Navbar() {
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg">
           <Cookie className="h-6 w-6 text-primary" />
-          <span>Cookie Shop</span>
+          <span>GranCookie</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2">
           <Button asChild variant="ghost" size="sm">
