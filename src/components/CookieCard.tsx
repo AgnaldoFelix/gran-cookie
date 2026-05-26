@@ -1,7 +1,9 @@
 import { Cookie } from "lucide-react";
+import { toast } from "sonner";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 
 export type CookieItem = {
   id: string;
@@ -14,11 +16,11 @@ export type CookieItem = {
 };
 
 export function CookieCard({ cookie }: { cookie: CookieItem }) {
+  const { add } = useCart();
   return (
     <Card className="overflow-hidden transition-shadow hover:shadow-lg">
       <div className="aspect-square w-full bg-muted flex items-center justify-center">
         {cookie.imagem_url ? (
-          // eslint-disable-next-line jsx-a11y/img-redundant-alt
           <img src={cookie.imagem_url} alt={`Imagem de ${cookie.nome}`} className="h-full w-full object-cover" />
         ) : (
           <Cookie className="h-16 w-16 text-muted-foreground/40" />
@@ -42,7 +44,16 @@ export function CookieCard({ cookie }: { cookie: CookieItem }) {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full" size="sm">Adicionar 🍪</Button>
+        <Button
+          className="w-full"
+          size="sm"
+          onClick={() => {
+            add({ id: cookie.id, nome: cookie.nome, preco: cookie.preco, imagem_url: cookie.imagem_url });
+            toast.success(`${cookie.nome} adicionado ao carrinho`);
+          }}
+        >
+          Adicionar 🍪
+        </Button>
       </CardFooter>
     </Card>
   );
