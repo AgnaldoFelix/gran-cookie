@@ -16,6 +16,11 @@ export function Navbar() {
           <span>Cookie Shop</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2">
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/montar">
+              <span className="text-sm">✨ Monte</span>
+            </Link>
+          </Button>
           <Button asChild variant="ghost" size="sm" className="relative">
             <Link to="/carrinho" aria-label="Carrinho">
               <ShoppingCart className="h-4 w-4" />
