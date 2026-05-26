@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Cookie } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Cookie, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { CookieCard, type CookieItem } from "@/components/CookieCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -21,6 +24,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const [query, setQuery] = useState("");
+  const [activeCat, setActiveCat] = useState<string | null>(null);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["cookies"],
     queryFn: async (): Promise<CookieItem[]> => {
@@ -33,6 +39,25 @@ function Home() {
       return (data ?? []).map((c) => ({ ...c, preco: Number(c.preco) }));
     },
   });
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    (data ?? []).forEach((c) => c.categoria && set.add(c.categoria));
+    return Array.from(set);
+  }, [data]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return (data ?? []).filter((c) => {
+      if (activeCat && c.categoria !== activeCat) return false;
+      if (!q) return true;
+      return (
+        c.nome.toLowerCase().includes(q) ||
+        (c.descricao ?? "").toLowerCase().includes(q) ||
+        (c.tags ?? []).some((t) => t.toLowerCase().includes(q))
+      );
+    });
+  }, [data, query, activeCat]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,7 +78,41 @@ function Home() {
         </section>
 
         <section className="container mx-auto px-4 py-12">
-          <h2 className="text-2xl font-bold mb-6">Nossos cookies</h2>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <h2 className="text-2xl font-bold">Nossos cookies</h2>
+            <div className="relative md:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome, sabor, tag..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+
+          {categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              <Badge
+                variant={activeCat === null ? "default" : "secondary"}
+                className="cursor-pointer"
+                onClick={() => setActiveCat(null)}
+              >
+                Todos
+              </Badge>
+              {categories.map((c) => (
+                <Badge
+                  key={c}
+                  variant={activeCat === c ? "default" : "secondary"}
+                  className="cursor-pointer"
+                  onClick={() => setActiveCat(c)}
+                >
+                  {c}
+                </Badge>
+              ))}
+            </div>
+          )}
+
           {error && (
             <p className="text-destructive">Erro ao carregar cookies: {(error as Error).message}</p>
           )}
@@ -63,14 +122,18 @@ function Home() {
                 <Skeleton key={i} className="h-80 w-full" />
               ))}
             </div>
-          ) : data && data.length > 0 ? (
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {data.map((c) => (
+              {filtered.map((c) => (
                 <CookieCard key={c.id} cookie={c} />
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">Nenhum cookie disponível no momento.</p>
+            <p className="text-muted-foreground">
+              {query || activeCat
+                ? "Nenhum cookie encontrado para o filtro."
+                : "Nenhum cookie disponível no momento."}
+            </p>
           )}
         </section>
       </main>
