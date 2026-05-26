@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as MontarRouteImport } from './routes/montar'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -18,6 +19,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MontarRoute = MontarRouteImport.update({
+  id: '/montar',
+  path: '/montar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarrinhoRoute = CarrinhoRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
+  '/montar': typeof MontarRoute
   '/perfil': typeof PerfilRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
+  '/montar': typeof MontarRoute
   '/perfil': typeof PerfilRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
+  '/montar': typeof MontarRoute
   '/perfil': typeof PerfilRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/auth' | '/carrinho' | '/perfil'
+  fullPaths: '/' | '/admin' | '/auth' | '/carrinho' | '/montar' | '/perfil'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/auth' | '/carrinho' | '/perfil'
-  id: '__root__' | '/' | '/admin' | '/auth' | '/carrinho' | '/perfil'
+  to: '/' | '/admin' | '/auth' | '/carrinho' | '/montar' | '/perfil'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/auth'
+    | '/carrinho'
+    | '/montar'
+    | '/perfil'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +92,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   CarrinhoRoute: typeof CarrinhoRoute
+  MontarRoute: typeof MontarRoute
   PerfilRoute: typeof PerfilRoute
 }
 
@@ -86,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/montar': {
+      id: '/montar'
+      path: '/montar'
+      fullPath: '/montar'
+      preLoaderRoute: typeof MontarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/carrinho': {
@@ -124,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   CarrinhoRoute: CarrinhoRoute,
+  MontarRoute: MontarRoute,
   PerfilRoute: PerfilRoute,
 }
 export const routeTree = rootRouteImport
