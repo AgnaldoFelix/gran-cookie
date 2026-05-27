@@ -79,15 +79,33 @@ function Home() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main>
-        <section className="border-b bg-gradient-to-b from-primary/5 to-transparent">
-          <div className="container mx-auto px-4 py-16 text-center">
-            <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3 mb-4">
+        <section className="relative overflow-hidden border-b">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroBanner})` }}
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" aria-hidden />
+
+          {/* Slogan marquee deslizante no fundo */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden opacity-15">
+            <div className="flex gap-12 whitespace-nowrap animate-[marquee_30s_linear_infinite] text-[12vw] md:text-[8vw] font-black tracking-tighter text-primary">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <span key={i} className="shrink-0">
+                  GranCookie • Feitos com carinho •
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative container mx-auto px-4 py-24 md:py-32 text-center">
+            <div className="inline-flex items-center justify-center rounded-full bg-primary/15 backdrop-blur p-3 mb-4">
               <Cookie className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight drop-shadow-sm">
               Cookies artesanais, feitos com carinho.
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto">
               Escolha seus sabores favoritos, monte seu cookie ou assine o Cookie do Mês.
             </p>
           </div>
