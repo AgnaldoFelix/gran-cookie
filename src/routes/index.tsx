@@ -48,7 +48,11 @@ function Home() {
         .eq("ativo", true)
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return (data ?? []).map((c) => ({ ...c, preco: Number(c.preco) }));
+      return (data ?? []).map((c) => ({
+        ...c,
+        preco: Number(c.preco),
+        imagem_url: c.imagem_url ?? MOCK_IMAGES[c.nome] ?? null,
+      }));
     },
   });
 
