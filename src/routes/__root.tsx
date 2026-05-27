@@ -80,12 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "GranCookie" },
       { name: "theme-color", content: "#1a0f08" },
       { property: "og:title", content: "GranCookie — Cookies Artesanais" },
-      { property: "og:description", content: "Cookies artesanais feitos com carinho. Sabores clássicos, especiais e recheados." },
+      { property: "og:description", content: "Cookies artesanais feitos com carinho. Sabores clássicos, especiais e recheados. Peça online e receba na sua porta." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GranCookie" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "GranCookie — Cookies Artesanais" },
-      { name: "twitter:description", content: "Cookies artesanais feitos com carinho." },
+      { name: "twitter:description", content: "Cookies artesanais feitos com carinho. Sabores clássicos, especiais e recheados. Peça online e receba na sua porta." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/559c5189-1840-4141-9167-a2a0a42f224b/id-preview-3c753477--0d9425dc-ce76-4eec-b9c1-73677c6c677a.lovable.app-1779879052118.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/559c5189-1840-4141-9167-a2a0a42f224b/id-preview-3c753477--0d9425dc-ce76-4eec-b9c1-73677c6c677a.lovable.app-1779879052118.png" },
     ],
     links: [
       {
