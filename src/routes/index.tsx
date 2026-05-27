@@ -79,35 +79,40 @@ function Home() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main>
-        <section className="relative overflow-hidden border-b">
+        <section className="relative overflow-hidden border-b bg-[#1a0f08]">
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center opacity-60"
             style={{ backgroundImage: `url(${heroBanner})` }}
             aria-hidden
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" aria-hidden />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/10"
+            aria-hidden
+          />
 
-          {/* Slogan marquee deslizante no fundo */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden opacity-15">
-            <div className="flex gap-12 whitespace-nowrap animate-[marquee_30s_linear_infinite] text-[12vw] md:text-[8vw] font-black tracking-tighter text-primary">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <span key={i} className="shrink-0">
-                  GranCookie • Feitos com carinho •
+          <div className="relative container mx-auto px-4 py-24 md:py-32 text-center">
+            <div className="inline-flex items-center justify-center rounded-full bg-primary/20 backdrop-blur-sm p-3 mb-5">
+              <Cookie className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
+              Cookies artesanais,
+              <br />
+              <span className="text-primary">feitos com carinho.</span>
+            </h1>
+            <p className="mt-5 text-lg text-white/80 max-w-2xl mx-auto">
+              Escolha seus sabores favoritos ou assine o Cookie do Mês.
+            </p>
+          </div>
+
+          {/* Slogan marquee sutil na base */}
+          <div className="relative border-t border-white/10 bg-black/30 backdrop-blur-sm py-3 overflow-hidden">
+            <div className="flex gap-8 whitespace-nowrap animate-[marquee_40s_linear_infinite] text-sm font-medium tracking-widest uppercase text-white/60">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span key={i} className="shrink-0 flex items-center gap-8">
+                  GranCookie <span className="text-primary">🍪</span> Feitos com carinho <span className="text-primary">•</span>
                 </span>
               ))}
             </div>
-          </div>
-
-          <div className="relative container mx-auto px-4 py-24 md:py-32 text-center">
-            <div className="inline-flex items-center justify-center rounded-full bg-primary/15 backdrop-blur p-3 mb-4">
-              <Cookie className="h-8 w-8 text-primary" />
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight drop-shadow-sm">
-              Cookies artesanais, feitos com carinho.
-            </h1>
-            <p className="mt-4 text-lg text-foreground/80 max-w-2xl mx-auto">
-              Escolha seus sabores favoritos, monte seu cookie ou assine o Cookie do Mês.
-            </p>
           </div>
         </section>
 
