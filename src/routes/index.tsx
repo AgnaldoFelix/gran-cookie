@@ -8,6 +8,18 @@ import { CookieCard, type CookieItem } from "@/components/CookieCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import heroBanner from "@/assets/hero-banner.jpg";
+import imgChocoChunks from "@/assets/cookie-choco-chunks.jpg";
+import imgRedVelvet from "@/assets/cookie-red-velvet.jpg";
+import imgAveiaMel from "@/assets/cookie-aveia-mel.jpg";
+import imgDoceLeite from "@/assets/cookie-doce-leite.jpg";
+
+const MOCK_IMAGES: Record<string, string> = {
+  "Choco Chunks": imgChocoChunks,
+  "Red Velvet": imgRedVelvet,
+  "Aveia & Mel": imgAveiaMel,
+  "Doce de Leite": imgDoceLeite,
+};
 
 export const Route = createFileRoute("/")({
   component: Home,
